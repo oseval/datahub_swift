@@ -13,15 +13,15 @@ struct SetData<A> {
     let lastClockOpt: Int64?
     let removedElements: [A]
     
-    func diffFromClock(a: SetData<A>, from: Int64) -> SetData<A> {
+    func diffFromClock(_ from: Int64) -> SetData<A> {
         return SetData(
-            added: a.added.filter { $0.key > from },
-            removed: a.removed.filter { $0.key > from }
+            added: self.added.filter { $0.key > from },
+            removed: self.removed.filter { $0.key > from }
         )
     }
     
-    func one(element: A, clock: Int64) -> SetData<A> {
-        return SetData(added: [clock : element], removed: [:])
+    static func one<El>(_ element: El, _ clock: Int64) -> SetData<El> {
+        return SetData<El>(added: [clock : element], removed: [:])
     }
     
     func apply<A>(clock: Int64, elements: A...) -> SetData<A> {
